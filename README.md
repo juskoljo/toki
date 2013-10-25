@@ -18,6 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
+```ruby
 require './lib/with_ruby_version'
 
 class Example
@@ -97,6 +98,7 @@ puts Example.ping # => 'PONG'
 
 # 2.0.0
 puts Example.new.array_to_string # => "123"
+```
 
 ## Contributing
 
