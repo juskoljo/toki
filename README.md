@@ -19,7 +19,7 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-require './lib/with_ruby_version'
+require 'with_ruby_version'
 
 class Example
 
@@ -35,7 +35,7 @@ class Example
     [1,2,3].to_s
   end
 
-  # any ruby mri version that does not start with "1.8"
+  # any mri version of ruby that is 1.9 or later
   with_ruby :version => /^((?!1\.[0-8]).*?)$/, :engine => 'ruby' do
 
     # also class methods can be defined
@@ -54,12 +54,12 @@ class Example
   end
 
   # applied only if version and patchlevel matches
-  with_ruby :version => 'X', :patchlevel => 'Y' do
+  with_ruby :version => 'x', :patchlevel => 'xyz' do
     # ...
   end
 
   # applied only if engine and version matches
-  with_ruby :engine => 'jruby', :version => 'x.x' do
+  with_ruby :engine => 'jruby', :version => 'x.y.z' do
     # ...
   end
 
@@ -69,11 +69,11 @@ class Example
   end
 
   # alternative do specify ruby version specific implementation
-  with_ruby_version 'X.Y.Z' do 
+  with_ruby_version 'x.y.z' do 
     # ...
   end
 
-  with_ruby_patchlevel 'X.Y.Z' do 
+  with_ruby_patchlevel 'zyx' do 
     # ...
   end
 
