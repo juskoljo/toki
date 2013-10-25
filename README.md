@@ -47,6 +47,7 @@ class Example
     end
 
     # applied only if ruby 1.9.x or later
+    # ruby 2.0.0 # => "123"
     def array_to_string
       [1,2,3].join
     end
@@ -68,7 +69,7 @@ class Example
     # ...
   end
 
-  # alternative do specify ruby version specific implementation
+  # alternative method to specify ruby version specific implementation
   with_ruby_version 'x.y.z' do 
     # ...
   end
