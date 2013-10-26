@@ -1,7 +1,7 @@
 require 'test/unit'
-require File.expand_path('../../lib/with_ruby_version', __FILE__)
+require File.expand_path('../../lib/when_ruby_version', __FILE__)
 
-class TestWithRubyVersion < Test::Unit::TestCase
+class TestWhenRubyVersion < Test::Unit::TestCase
 
   def setup
     # do nothing
@@ -13,10 +13,11 @@ class TestWithRubyVersion < Test::Unit::TestCase
 
   def test_ruby_version
     klass = Class.new do
+      extend WhenRubyVersion
       def hello
         nil
       end
-      with_ruby :version => RUBY_VERSION do
+      when_ruby :version => RUBY_VERSION do
         def hello
           "world"
         end
@@ -28,10 +29,11 @@ class TestWithRubyVersion < Test::Unit::TestCase
 
   def test_ruby_patchlevel
     klass = Class.new do
+      extend WhenRubyVersion
       def hello
         nil
       end
-      with_ruby :patchlevel => RUBY_PATCHLEVEL do
+      when_ruby :patchlevel => RUBY_PATCHLEVEL do
         def hello
           "world"
         end
@@ -44,10 +46,11 @@ class TestWithRubyVersion < Test::Unit::TestCase
   def test_ruby_engine
     ruby_engine = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
     klass = Class.new do
+      extend WhenRubyVersion
       def hello
         nil
       end
-      with_ruby :engine => ruby_engine do
+      when_ruby :engine => ruby_engine do
         def hello
           "world"
         end
@@ -59,10 +62,11 @@ class TestWithRubyVersion < Test::Unit::TestCase
 
   def test_ruby_platform
     klass = Class.new do
+      extend WhenRubyVersion
       def hello
         nil
       end
-      with_ruby :platform => RUBY_PLATFORM do
+      when_ruby :platform => RUBY_PLATFORM do
         def hello
           "world"
         end
@@ -74,10 +78,11 @@ class TestWithRubyVersion < Test::Unit::TestCase
 
   def test_class_methods
     klass = Class.new do
+      extend WhenRubyVersion
       def self.hello
         nil
       end
-      with_ruby :version => Regexp.union(RUBY_VERSION) do
+      when_ruby :version => Regexp.union(RUBY_VERSION) do
         class << self
           def hello
             "world"

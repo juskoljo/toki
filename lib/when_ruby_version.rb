@@ -1,27 +1,27 @@
-require File.expand_path('../with_ruby_version/version', __FILE__)
+require File.expand_path('../when_ruby_version/version', __FILE__)
 
-module WithRubyVersion
+module WhenRubyVersion
 
-  def with_ruby(options, &block)
+  def when_ruby(options, &block)
     raise ArgumentError, "wrong argument type #{options.class} (expected Hash)" unless options.kind_of?(Hash)
     apply_behaviour(&block) if options.all? do | key, value |
       case key
       when :version
-        with_ruby_version(value)
+        when_ruby_version(value)
       when :engine
-        with_ruby_engine(value)
+        when_ruby_engine(value)
       when :patchlevel
-        with_ruby_patchlevel(value)
+        when_ruby_patchlevel(value)
       when :platform
-        with_ruby_platform(value)
+        when_ruby_platform(value)
       else
-        raise ArgumentError, "unsupported key #{key} for with_ruby options"
+        raise ArgumentError, "unsupported key #{key} for when_ruby options"
       end
     end
   end
 
   # RUBY_VERSION
-  def with_ruby_version(pattern, &block)
+  def when_ruby_version(pattern, &block)
     if pattern_matches_with?("#{RUBY_VERSION}p#{RUBY_PATCHLEVEL}", pattern)
       apply_behaviour(&block)
     else
@@ -30,7 +30,7 @@ module WithRubyVersion
   end
 
   # RUBY_PATCHLEVEL
-  def with_ruby_patchlevel(pattern, &block)
+  def when_ruby_patchlevel(pattern, &block)
     if pattern_matches_with?(RUBY_PATCHLEVEL, pattern)
       apply_behaviour(&block)
     else
@@ -39,7 +39,7 @@ module WithRubyVersion
   end
 
   # RUBY_ENGINE
-  def with_ruby_engine(pattern, &block)
+  def when_ruby_engine(pattern, &block)
     # ruby 1.8.7 does not have RUBY_ENGINE constant
     ruby_engine = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
     if pattern_matches_with?(ruby_engine, pattern)
@@ -50,7 +50,7 @@ module WithRubyVersion
   end
 
   # RUBY_PLATFORM
-  def with_ruby_platform(pattern, &block)
+  def when_ruby_platform(pattern, &block)
     if pattern_matches_with?(RUBY_PLATFORM, pattern)
       apply_behaviour(&block)
     else
@@ -79,12 +79,12 @@ module WithRubyVersion
 
 end
 
-# apply with WithRubyVersion to Module
-class Module
-  include WithRubyVersion
-end
+# # apply with WithRubyVersion to Module
+# class Module
+#   include WithRubyVersion
+# end
 
-# apply with WithRubyVersion to Class
-class Class
-  include WithRubyVersion
-end
+# # apply with WithRubyVersion to Class
+# class Class
+#   include WithRubyVersion
+# end
