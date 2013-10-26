@@ -56,20 +56,18 @@ class Example
   when_ruby :engine   => 'macruby', :macruby_version  => '0.12'   do; end
   when_ruby :engine   => 'rbx',     :rbx_version      => '2.1.1'  do; end
 
-  # applied only if platform matches
-  when_ruby :platform => /darwin/       do; end
+  # applied only if platform matches; :windows, :osx, :linux, :unix, :unknown
+  when_ruby :platform => :linux         do; end
+  when_ruby :platform => /linux/        do; end
 
   # alternative method to specify ruby version specific implementation
   when_ruby_version     '2.0.0'         do; end
   when_jruby_version    '1.7.6'         do; end
   when_macruby_version  '0.12'          do; end
   when_rbx_version      '2.1.1'         do; end
-
   when_ruby_patchlevel  '371'           do; end
   when_ruby_engine      'rbx'           do; end
-  
   when_platform         :osx            do; end
-  when_platform         /darwin/        do; end
 
 end
 
