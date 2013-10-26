@@ -1,7 +1,7 @@
 require 'test/unit'
-require File.expand_path('../../lib/when_ruby_version', __FILE__)
+require File.expand_path('../../lib/toki', __FILE__)
 
-class TestWhenRubyVersion < Test::Unit::TestCase
+class TestToki < Test::Unit::TestCase
 
   def setup
     # do nothing
@@ -13,7 +13,7 @@ class TestWhenRubyVersion < Test::Unit::TestCase
 
   def test_ruby_version
     klass = Class.new do
-      extend WhenRubyVersion
+      extend Toki
       def hello
         nil
       end
@@ -32,7 +32,7 @@ class TestWhenRubyVersion < Test::Unit::TestCase
       Object.const_set(:JRUBY_VERSION, '1.7.4')
     end
     klass = Class.new do
-      extend WhenRubyVersion
+      extend Toki
       def hello
         nil
       end
@@ -55,7 +55,7 @@ class TestWhenRubyVersion < Test::Unit::TestCase
       Object.const_set(:Rubinius, klass)
     end
     klass = Class.new do
-      extend WhenRubyVersion
+      extend Toki
       def hello
         nil
       end
@@ -76,7 +76,7 @@ class TestWhenRubyVersion < Test::Unit::TestCase
       Object.const_set(:MACRUBY_VERSION, '0.12')
     end
     klass = Class.new do
-      extend WhenRubyVersion
+      extend Toki
       def hello
         nil
       end
@@ -94,7 +94,7 @@ class TestWhenRubyVersion < Test::Unit::TestCase
 
   def test_ruby_patchlevel
     klass = Class.new do
-      extend WhenRubyVersion
+      extend Toki
       def hello
         nil
       end
@@ -111,7 +111,7 @@ class TestWhenRubyVersion < Test::Unit::TestCase
   def test_ruby_engine
     ruby_engine = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
     klass = Class.new do
-      extend WhenRubyVersion
+      extend Toki
       def hello
         nil
       end
@@ -127,7 +127,7 @@ class TestWhenRubyVersion < Test::Unit::TestCase
 
   def test_platform
     klass = Class.new do
-      extend WhenRubyVersion
+      extend Toki
       def hello
         nil
       end
@@ -143,7 +143,7 @@ class TestWhenRubyVersion < Test::Unit::TestCase
 
   def test_class_methods
     klass = Class.new do
-      extend WhenRubyVersion
+      extend Toki
       def self.hello
         nil
       end
