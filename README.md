@@ -38,9 +38,9 @@ class Example
   when_ruby :version => /^((?!1\.[0-8]).*?)$/, :engine => 'ruby' do
     # also class methods can be defined
     def self.ping
-      "gnop"
+      "PONG"
     end
-    # applied only if ruby 1.9 or later; overwrites previous array_to_string method
+    # applied only if ruby 1.9.x or later; overwrites previous version of array_to_string method
     # ruby 2.0.0 # => "123"
     def array_to_string
       [1,2,3].join
@@ -48,19 +48,28 @@ class Example
   end
 
   # applied only if version and patchlevel matches
-  when_ruby :version  => '1.8.7', :patchlevel => '371' do; end
+  when_ruby :version  => '1.8.7',   :patchlevel       => '371'    do; end
 
   # applied only if engine and version matches
-  when_ruby :engine   => 'jruby', :version => '1.7.4' do; end
+  when_ruby :engine   => 'ruby',    :version          => '1.8.7'  do; end
+  when_ruby :engine   => 'jruby',   :jruby_version    => '1.7.6'  do; end
+  when_ruby :engine   => 'macruby', :macruby_version  => '0.12'   do; end
+  when_ruby :engine   => 'rbx',     :rbx_version      => '2.1.1'  do; end
 
   # applied only if platform matches
-  when_ruby :platform => '...' do; end
+  when_ruby :platform => /darwin/       do; end
 
   # alternative method to specify ruby version specific implementation
-  when_ruby_version     'x.y.z'         do; end
-  when_ruby_patchlevel  'zyx'           do; end
-  when_ruby_engine      'engine_xyz'    do; end
-  when_ruby_platform    'platform-i386' do; end
+  when_ruby_version     '2.0.0'         do; end
+  when_jruby_version    '1.7.6'         do; end
+  when_macruby_version  '0.12'          do; end
+  when_rbx_version      '2.1.1'         do; end
+
+  when_ruby_patchlevel  '371'           do; end
+  when_ruby_engine      'rbx'           do; end
+  
+  when_platform         :osx            do; end
+  when_platform         /darwin/        do; end
 
 end
 
