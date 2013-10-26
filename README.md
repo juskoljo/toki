@@ -72,11 +72,11 @@ class Example
 end
 
 # 1.8.7
-puts Example.ping                 # => 'pong'
+puts Example.ping                 # => "pong"
 puts Example.new.array_to_string  # => "123"
 
 # 2.0.0
-puts Example.ping                 # => 'gnop'
+puts Example.ping                 # => "gnop"
 puts Example.new.array_to_string  # => "123"
 ```
 
