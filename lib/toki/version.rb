@@ -1,3 +1,3 @@
-module WhenRubyVersion
+module Toki
   VERSION = "0.0.1"
 end

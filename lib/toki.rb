@@ -1,7 +1,7 @@
 require 'rbconfig'
-require File.expand_path('../when_ruby_version/version', __FILE__)
+require File.expand_path('../toki/version', __FILE__)
 
-module WhenRubyVersion
+module Toki
 
   def when_ruby(options, &block)
     raise ArgumentError, "wrong argument type #{options.class} (expected Hash)" unless options.kind_of?(Hash)
@@ -150,4 +150,4 @@ module WhenRubyVersion
     true
   end
 
-end # WhenRubyVersion
+end # Toki

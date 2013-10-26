@@ -1,12 +1,12 @@
-# when_ruby_version
+# Toki
 
-when_ruby_version is a DSL that helps you to implement Ruby version, patchlevel, engine and platform specific code
+Toki is a DSL that helps you to implement Ruby version, patchlevel, engine and platform specific code
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'when_ruby_version'
+    gem 'toki'
 
 And then execute:
 
@@ -14,15 +14,15 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install when_ruby_version
+    $ gem install toki
 
 ## Usage
 
 ```ruby
-require 'when_ruby_version'
+require 'toki'
 
 class Example
-  extend WhenRubyVersion
+  extend Toki
 
   def self.ping
     "pong"
