@@ -35,7 +35,7 @@ class Example
   end
 
   # any mri version of ruby that is 1.9 or later
-  when_ruby :version => /^((?!1\.[0-8]).*?)$/, :engine => 'ruby' do
+  when_ruby :engine => 'ruby', :version => /^((?!1\.[0-8]).*?)$/ do
     # also class methods can be defined
     def self.ping
       "gnop"
