@@ -38,7 +38,7 @@ class Example
   when_ruby :version => /^((?!1\.[0-8]).*?)$/, :engine => 'ruby' do
     # also class methods can be defined
     def self.ping
-      "PONG"
+      "gnop"
     end
     # applied only if ruby 1.9.x or later; overwrites array_to_string method
     # ruby 2.0.0 # => "123"
