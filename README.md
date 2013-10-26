@@ -40,7 +40,7 @@ class Example
     def self.ping
       "PONG"
     end
-    # applied only if ruby 1.9.x or later; overwrites previous version of array_to_string method
+    # applied only if ruby 1.9.x or later; overwrites array_to_string method
     # ruby 2.0.0 # => "123"
     def array_to_string
       [1,2,3].join
