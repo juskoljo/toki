@@ -1,4 +1,4 @@
-# Toki [![Gem Version](https://badge.fury.io/rb/toki.png)](http://badge.fury.io/rb/toki)
+# Toki [![Gem Version](https://badge.fury.io/rb/toki.png)](http://badge.fury.io/rb/toki) [![Build Status](https://travis-ci.org/juskoljo/toki.png?branch=master)](https://travis-ci.org/juskoljo/toki)
 
 Toki is a DSL that helps you to implement Ruby version, patchlevel, engine and platform specific code
 
