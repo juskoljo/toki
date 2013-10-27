@@ -1,4 +1,4 @@
-# Toki
+# Toki [![Gem Version](https://badge.fury.io/rb/toki.png)](http://badge.fury.io/rb/toki)
 
 Toki is a DSL that helps you to implement Ruby version, patchlevel, engine and platform specific code
 
