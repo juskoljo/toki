@@ -200,6 +200,40 @@ class TestToki < Test::Unit::TestCase
     assert_equal "world", instance.hello
   end
 
+  def test_ruby_engine_with_symbol_argument
+    ruby_engine = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
+    ruby_engine = ruby_engine.to_sym
+    klass = Class.new do
+      extend Toki
+      def hello
+        nil
+      end
+      when_ruby :engine => ruby_engine do
+        def hello
+          "world"
+        end
+      end
+    end
+    instance = klass.new
+    assert_equal "world", instance.hello
+  end
+
+  def test_ruby_version_with_array_argument
+    klass = Class.new do
+      extend Toki
+      def hello
+        nil
+      end
+      when_ruby :version => ['x.x.x', RUBY_VERSION] do
+        def hello
+          "world"
+        end
+      end
+    end
+    instance = klass.new
+    assert_equal "world", instance.hello
+  end
+
   def test_platform
     klass = Class.new do
       extend Toki
@@ -231,6 +265,20 @@ class TestToki < Test::Unit::TestCase
       end
     end
     assert_equal "world", klass.hello
+  end
+
+  def test_include_toki_to_instance
+    klass = Class.new do
+      include Toki
+      def raise_exception
+        when_ruby_version RUBY_VERSION do
+          raise RuntimeError
+        end
+      end
+    end
+    assert_raises RuntimeError do
+      p klass.new.raise_exception
+    end
   end
 
 end

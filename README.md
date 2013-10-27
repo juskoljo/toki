@@ -21,7 +21,7 @@ Or install it yourself as:
 ```ruby
 require 'toki'
 
-class Example
+class Example1
   extend Toki
 
   def self.ping
@@ -35,7 +35,7 @@ class Example
   end
 
   # any mri version of ruby that is 1.9 or later
-  when_ruby :engine => 'ruby', :version => /^((?!1\.[0-8]).*?)$/ do
+  when_ruby :engine => :ruby, :version => /^(?!1\.[0-8]).*$/ do
     # also class methods can be defined
     def self.ping
       "gnop"
@@ -51,17 +51,29 @@ class Example
   when_ruby :version => '1.8.7',    :patchlevel       => '371'    do; end
 
   # applied only if engine and version matches
-  when_ruby :engine  => 'ruby',     :version          => '1.8.7'  do; end
-  when_ruby :engine  => 'jruby',    :jruby_version    => '1.7.6'  do; end
-  when_ruby :engine  => 'macruby',  :macruby_version  => '0.12'   do; end
-  when_ruby :engine  => 'rbx',      :rbx_version      => '2.1.1'  do; end
-  when_ruby :engine  => 'maglev',   :maglev_version   => '1.1RC1' do; end
-  when_ruby :engine  => 'ironruby', :ironruby_version => '1.1.3'  do; end
-  when_ruby :engine  => 'kiji',     :kiji_version     => '0.11'   do; end
+  when_ruby :engine  => :ruby,      :version          => '1.8.7'  do; end
+  when_ruby :engine  => "ruby",     :version          => '1.8.7'  do; end
+
+  # notice that /ruby/ will match with both "ruby" and "jruby"
+  when_ruby :engine  => /^ruby$/,   :version          => '1.8.7'  do; end
+
+  when_ruby :engine  => :jruby,     :jruby_version    => '1.7.6'  do; end
+  when_ruby :engine  => :macruby,   :macruby_version  => '0.12'   do; end
+  when_ruby :engine  => :rbx,       :rbx_version      => '2.1.1'  do; end
+  when_ruby :engine  => :maglev,    :maglev_version   => '1.1RC1' do; end
+  when_ruby :engine  => :ironruby,  :ironruby_version => '1.1.3'  do; end
+  when_ruby :engine  => :kiji,      :kiji_version     => '0.11'   do; end
+
+  # apply only if matches with one of the engines
+  when_ruby :engine  => [:ruby, :jruby]     do; end
+
+  # apply only if matches with one of the engines
+  when_ruby :version => ['1.8.7', '2.0.0']  do; end
 
   # applied only if platform matches; :windows, :osx, :linux, :unix, :unknown
   when_ruby :platform => :linux         do; end
   when_ruby :platform => /linux/        do; end
+  when_ruby :platform => "linux"        do; end
 
   # alternative method to specify ruby version specific implementation
   when_ruby_version     '2.0.0'         do; end
@@ -71,19 +83,39 @@ class Example
   when_maglev_version   '1.1RC1'        do; end
   when_ironruby_version '1.1.3'         do; end
   when_kiji_version     '0.11'          do; end
-  when_ruby_patchlevel  '371'           do; end
-  when_ruby_engine      'rbx'           do; end
+  when_ruby_patchlevel  371             do; end
+  when_ruby_engine      :rbx            do; end
   when_platform         :osx            do; end
 
 end
 
+class Example2
+  include Toki
+  def array_to_string
+    when_ruby_engine :ruby do
+      when_ruby :version => /^((?!1\.[0-8]).*?)$/ do
+        # MRI 1.9.x or later
+        return [1,2,3].join
+      end
+      # MRI 1.8.7
+      return [1,2,3].to_s
+    end
+    "321"
+  end
+end
+
 # MRI 1.8.7
-puts Example.ping                 # => "pong"
-puts Example.new.array_to_string  # => "123"
+puts Example1.ping                 # => "pong"
+puts Example1.new.array_to_string  # => "123"
+puts Example2.new.array_to_string  # => "123"
 
 # MRI 2.0.0
-puts Example.ping                 # => "gnop"
-puts Example.new.array_to_string  # => "123"
+puts Example1.ping                 # => "gnop"
+puts Example1.new.array_to_string  # => "123"
+puts Example2.new.array_to_string  # => "123"
+
+# e.g. JRuby or any other engine
+puts Example2.new.array_to_string  # => "321"
 ```
 
 ## Contributing

@@ -34,9 +34,9 @@ module Toki
   end
 
   # JRUBY_VERSION
-  def when_jruby_version(pattern, &block)
+  def when_jruby_version(value, &block)
     if defined?(JRUBY_VERSION)
-      if pattern_matches_with?(JRUBY_VERSION, pattern)
+      if value_matches_with?(value, JRUBY_VERSION)
         apply_behaviour(&block)
       else
         false
@@ -48,9 +48,9 @@ module Toki
   end
 
   # MACRUBY_VERSION
-  def when_macruby_version(pattern, &block)
+  def when_macruby_version(value, &block)
     if defined?(MACRUBY_VERSION)
-      if pattern_matches_with?(MACRUBY_VERSION, pattern)
+      if value_matches_with?(value, MACRUBY_VERSION)
         apply_behaviour(&block)
       else
         false
@@ -62,9 +62,9 @@ module Toki
   end
 
   # Rubinius::VERSION
-  def when_rbx_version(pattern, &block)
+  def when_rbx_version(value, &block)
     if defined?(Rubinius)
-      if pattern_matches_with?(Rubinius::VERSION, pattern)
+      if value_matches_with?(value, Rubinius::VERSION)
         apply_behaviour(&block)
       else
         false
@@ -76,9 +76,9 @@ module Toki
   end
 
   # MAGLEV_VERSION
-  def when_maglev_version(pattern, &block)
+  def when_maglev_version(value, &block)
     if defined?(MAGLEV_VERSION)
-      if pattern_matches_with?(MAGLEV_VERSION, pattern)
+      if value_matches_with?(value, MAGLEV_VERSION)
         apply_behaviour(&block)
       else
         false
@@ -90,9 +90,9 @@ module Toki
   end
 
   # IRONRUBY_VERSION
-  def when_ironruby_version(pattern, &block)
+  def when_ironruby_version(value, &block)
     if defined?(IRONRUBY_VERSION)
-      if pattern_matches_with?(IRONRUBY_VERSION, pattern)
+      if value_matches_with?(value, IRONRUBY_VERSION)
         apply_behaviour(&block)
       else
         false
@@ -104,9 +104,9 @@ module Toki
   end
 
   # KIJI_VERSION
-  def when_kiji_version(pattern, &block)
+  def when_kiji_version(value, &block)
     if defined?(KIJI_VERSION)
-      if pattern_matches_with?(KIJI_VERSION, pattern)
+      if value_matches_with?(value, KIJI_VERSION)
         apply_behaviour(&block)
       else
         false
@@ -118,8 +118,8 @@ module Toki
   end
 
   # RUBY_VERSION
-  def when_ruby_version(pattern, &block)
-    if pattern_matches_with?(RUBY_VERSION, pattern)
+  def when_ruby_version(value, &block)
+    if value_matches_with?(value, RUBY_VERSION)
       apply_behaviour(&block)
     else
       false
@@ -127,8 +127,8 @@ module Toki
   end
 
   # RUBY_PATCHLEVEL
-  def when_ruby_patchlevel(pattern, &block)
-    if pattern_matches_with?(RUBY_PATCHLEVEL, pattern)
+  def when_ruby_patchlevel(value, &block)
+    if value_matches_with?(value, RUBY_PATCHLEVEL)
       apply_behaviour(&block)
     else
       false
@@ -136,10 +136,10 @@ module Toki
   end
 
   # RUBY_ENGINE
-  def when_ruby_engine(pattern, &block)
+  def when_ruby_engine(value, &block)
     # ruby 1.8.7 does not have RUBY_ENGINE constant
     ruby_engine = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
-    if pattern_matches_with?(ruby_engine, pattern)
+    if value_matches_with?(value, ruby_engine)
       apply_behaviour(&block)
     else
       false
@@ -147,16 +147,16 @@ module Toki
   end
 
   # RUBY_PLATFORM
-  def when_platform(pattern, &block)
-    case pattern
+  def when_platform(value, &block)
+    case value
     when Symbol
-      if pattern == detect_os
+      if value == detect_os
         apply_behaviour(&block)
       else
         false
       end
     else
-      if pattern_matches_with?(RbConfig::CONFIG['host_os'], pattern)
+      if value_matches_with?(value, RbConfig::CONFIG['host_os'])
         apply_behaviour(&block)
       else
         false
@@ -181,20 +181,31 @@ module Toki
     end
   end
 
-  def pattern_matches_with?(constant, pattern)
-    constant.to_s =~ case pattern
+  def value_matches_with?(value, other)
+    case value
     when String, Integer
-      Regexp.union(pattern.to_s)
+      value.to_s == other.to_s
     when Regexp
-      pattern
+      value =~ other
+    when Array
+      value.any?{|item| value_matches_with?(item, other)}
+    when Symbol
+      value == other.to_sym
     else
-      raise ArgumentError, "wrong argument type #{pattern.class} (expected String or Regexp)"
+      raise ArgumentError, "wrong argument type #{value.class} (expected String, Regexp, Array or Symbol)"
     end
   end
 
   # apply behaviour to target class
   def apply_behaviour(&block)
-    class_eval(&block) if block_given?
+    if block_given?
+      case self
+      when Class, Module
+        class_eval(&block) 
+      else
+        instance_eval(&block)
+      end
+    end
     true
   end
 
