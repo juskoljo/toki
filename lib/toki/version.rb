@@ -1,3 +1,3 @@
 module Toki
-  VERSION = "0.0.1"
+  VERSION = File.read(File.expand_path('../../../version', __FILE__))
 end

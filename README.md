@@ -48,13 +48,16 @@ class Example
   end
 
   # applied only if version and patchlevel matches
-  when_ruby :version  => '1.8.7',   :patchlevel       => '371'    do; end
+  when_ruby :version => '1.8.7',    :patchlevel       => '371'    do; end
 
   # applied only if engine and version matches
-  when_ruby :engine   => 'ruby',    :version          => '1.8.7'  do; end
-  when_ruby :engine   => 'jruby',   :jruby_version    => '1.7.6'  do; end
-  when_ruby :engine   => 'macruby', :macruby_version  => '0.12'   do; end
-  when_ruby :engine   => 'rbx',     :rbx_version      => '2.1.1'  do; end
+  when_ruby :engine  => 'ruby',     :version          => '1.8.7'  do; end
+  when_ruby :engine  => 'jruby',    :jruby_version    => '1.7.6'  do; end
+  when_ruby :engine  => 'macruby',  :macruby_version  => '0.12'   do; end
+  when_ruby :engine  => 'rbx',      :rbx_version      => '2.1.1'  do; end
+  when_ruby :engine  => 'maglev',   :maglev_version   => '1.1RC1' do; end
+  when_ruby :engine  => 'ironruby', :ironruby_version => '1.1.3'  do; end
+  when_ruby :engine  => 'kiji',     :kiji_version     => '0.11'   do; end
 
   # applied only if platform matches; :windows, :osx, :linux, :unix, :unknown
   when_ruby :platform => :linux         do; end
@@ -65,17 +68,20 @@ class Example
   when_jruby_version    '1.7.6'         do; end
   when_macruby_version  '0.12'          do; end
   when_rbx_version      '2.1.1'         do; end
+  when_maglev_version   '1.1RC1'        do; end
+  when_ironruby_version '1.1.3'         do; end
+  when_kiji_version     '0.11'          do; end
   when_ruby_patchlevel  '371'           do; end
   when_ruby_engine      'rbx'           do; end
   when_platform         :osx            do; end
 
 end
 
-# 1.8.7
+# MRI 1.8.7
 puts Example.ping                 # => "pong"
 puts Example.new.array_to_string  # => "123"
 
-# 2.0.0
+# MRI 2.0.0
 puts Example.ping                 # => "gnop"
 puts Example.new.array_to_string  # => "123"
 ```

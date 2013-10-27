@@ -92,6 +92,69 @@ class TestToki < Test::Unit::TestCase
     Object.send(:remove_const, :MACRUBY_VERSION) unless macruby_version_defined
   end
 
+  def test_maglev_version
+    unless (maglev_version_defined = defined?(MAGLEV_VERSION))
+      Object.const_set(:MAGLEV_VERSION, '1.1RC1')
+    end
+    klass = Class.new do
+      extend Toki
+      def hello
+        nil
+      end
+      when_ruby :maglev_version => '1.1RC1' do
+        def hello
+          "world"
+        end
+      end
+    end
+    instance = klass.new
+    assert_equal "world", instance.hello
+  ensure
+    Object.send(:remove_const, :MAGLEV_VERSION) unless maglev_version_defined
+  end
+
+  def test_ironruby_version
+    unless (ironruby_version_defined = defined?(IRONRUBY_VERSION))
+      Object.const_set(:IRONRUBY_VERSION, '1.1.3')
+    end
+    klass = Class.new do
+      extend Toki
+      def hello
+        nil
+      end
+      when_ruby :ironruby_version => '1.1.3' do
+        def hello
+          "world"
+        end
+      end
+    end
+    instance = klass.new
+    assert_equal "world", instance.hello
+  ensure
+    Object.send(:remove_const, :IRONRUBY_VERSION) unless ironruby_version_defined
+  end
+
+  def test_kiji_version
+    unless (kiji_version_defined = defined?(KIJI_VERSION))
+      Object.const_set(:KIJI_VERSION, '0.11')
+    end
+    klass = Class.new do
+      extend Toki
+      def hello
+        nil
+      end
+      when_ruby :kiji_version => '0.11' do
+        def hello
+          "world"
+        end
+      end
+    end
+    instance = klass.new
+    assert_equal "world", instance.hello
+  ensure
+    Object.send(:remove_const, :KIJI_VERSION) unless kiji_version_defined
+  end
+
   def test_ruby_patchlevel
     klass = Class.new do
       extend Toki

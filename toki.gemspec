@@ -7,9 +7,8 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Toki is a DSL that helps you to implement Ruby version, patchlevel, engine and platform specific code}
   gem.summary       = %q{Toki is a DSL that helps you to implement Ruby version, patchlevel, engine and platform specific code}
   gem.homepage      = "https://github.com/juskoljo/toki"
-
   gem.files         = `git ls-files`.split($\)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.executables   = [] # gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "toki"
   gem.require_paths = ["lib"]

@@ -1,0 +1,174 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+# -*- warn-indent: true -*-
+require 'time'
+require 'optparse'
+
+bump_version  = true
+old_version   = nil
+new_version   = nil
+
+def git_config_value(tag)
+  `/usr/bin/env git config --get-all #{tag}`.chop
+end
+
+def git_rev_parse(command)
+  `git rev-parse #{command}`.chop
+end
+
+def exec(command)
+  system("/usr/bin/env #{command}")
+end
+
+def git_directory
+  git_rev_parse('--git-dir')
+end
+
+def git_toplevel_directory
+  git_rev_parse('--show-toplevel')
+end
+
+def commit_message
+  File.read(File.join(git_directory, 'COMMIT_EDITMSG')).split("\n").select do | line |
+    line !~ /^#/
+  end
+end
+
+def update_changelog(message)
+  changelog_file = File.join(git_toplevel_directory, 'changelog')
+  if File.exists?(changelog_file)
+    changelog = message + "\n" + File.read(changelog_file)
+    add_file = false
+  else
+    changelog = message
+    add_file = true
+  end
+  # write changelog file
+  File.open(changelog_file, 'w') do | file |
+    file << changelog
+  end
+  # add file to git repository
+  if add_file 
+    `git add #{changelog_file}`
+  end
+end
+
+def version_number
+  File.read(File.join(git_toplevel_directory, 'version')).gsub(/[\n\r]/, '')
+end
+
+def bump_version(version, release_type)
+  # parse current version number
+  version = version.split('.').map(&:to_i)
+  # major.minor.patch(.build)
+  while version.size < 3
+    version << 0
+  end
+  case release_type
+  when :major
+    # major.0.0
+    version[0] = version[0].succ
+    version[1] = 0
+    version[2] = 0
+  when :minor
+    # major.minor.0
+    version[1] = version[1].succ
+    version[2] = 0
+  when :patch
+    # major.minor.patch
+    version[2] = version[2].succ
+  else
+    abort "Unsupported release type #{release_type.inspect}"
+  end
+  # version as string
+  version = version.join('.')
+  # update version file
+  File.open('version', 'w') do | file |
+    file << version
+  end
+  # return new version number
+  version
+end
+
+def read_project_name
+  File.read(File.join(git_toplevel_directory, 'project'))
+end
+
+# main
+arguments     = ARGV
+
+# collect filenames
+files         = ARGV.select{| argument | argument !~ /^-/ }.join(' ')
+release_type  = []
+@version_bump = nil
+
+OptionParser.new do | opts |
+  opts.banner     = "Project versioning, changelog creation and release automation tool"
+  opts.define_head "Usage: #{ File.basename($0) } <files> [options]"
+  opts.on('--major', "Performs a major release; bumps up major version number") do
+    release_type << :major
+  end
+  opts.on('--minor', "Performs a minor release; bumps up minor version number") do
+    release_type << :minor
+  end
+  opts.on('--patch', "Performs a patch release; bumps up patch number (default)") do
+    release_type << :patch
+  end  
+  opts.on('-h', '--help', "Prints the synopsis and a list of the most commonly used commands") { puts opts; exit }
+  opts.parse!
+  if files.size == 0 && release_type.empty?
+    puts opts
+    exit
+  end
+end
+
+# only bump version if no files given but release_type is set
+if (files.empty? && !release_type.empty?)
+  project_name  = read_project_name
+  old_version   = version_number
+  new_version   = bump_version(old_version, release_type.first)
+  files         = [File.join(git_toplevel_directory, 'version')]
+  bump_version  = false
+end
+
+# git commit; write a commit message
+if exec("git commit #{files}") 
+
+  case release_type.size
+  when 0
+    release_type = :patch
+  when 1
+    release_type = release_type.first
+  else
+    abort "Error: Multiple release types added #{release_type.map(&:inspect).join(', ')}"
+  end
+
+  project_name  = read_project_name
+
+  if bump_version
+    old_version   = version_number
+    new_version   = bump_version(old_version, release_type)
+  end
+
+  puts "Updating #{project_name} version from #{old_version} to #{new_version}"
+
+  # create a release note 
+  release_note = "#{Time.now.to_s}  #{git_config_value('user.name')}  <#{git_config_value('user.email')}>\n\n"
+  release_note << "    * #{project_name} version #{new_version} changes:\n\n"
+  release_note << commit_message.collect{| line | "      * #{line}" }.join("\n")
+  release_note << "\n"
+
+  # add release note to changelog
+  update_changelog(release_note)
+
+  updated_files = [
+    File.join(git_toplevel_directory, 'version'),
+    File.join(git_toplevel_directory, 'changelog')
+  ]
+
+  # add changelog entry to commit; use same commit message
+  unless exec("git commit #{files} #{updated_files.join(' ')} --amend -C #{git_rev_parse('HEAD')}")
+    abort "Failed to perform commit"
+  end
+
+end

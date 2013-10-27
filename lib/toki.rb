@@ -15,6 +15,12 @@ module Toki
         when_macruby_version(value)
       when :rbx_version
         when_rbx_version(value)
+      when :maglev_version
+        when_maglev_version(value)
+      when :ironruby_version
+        when_ironruby_version(value)
+      when :kiji_version
+        when_kiji_version(value)
       when :engine
         when_ruby_engine(value)
       when :patchlevel
@@ -65,6 +71,48 @@ module Toki
       end
     else
       # Rubinius not defined
+      false
+    end
+  end
+
+  # MAGLEV_VERSION
+  def when_maglev_version(pattern, &block)
+    if defined?(MAGLEV_VERSION)
+      if pattern_matches_with?(MAGLEV_VERSION, pattern)
+        apply_behaviour(&block)
+      else
+        false
+      end
+    else
+      # MAGLEV_VERSION not defined
+      false
+    end
+  end
+
+  # IRONRUBY_VERSION
+  def when_ironruby_version(pattern, &block)
+    if defined?(IRONRUBY_VERSION)
+      if pattern_matches_with?(IRONRUBY_VERSION, pattern)
+        apply_behaviour(&block)
+      else
+        false
+      end
+    else
+      # IRONRUBY_VERSION not defined
+      false
+    end
+  end
+
+  # KIJI_VERSION
+  def when_kiji_version(pattern, &block)
+    if defined?(KIJI_VERSION)
+      if pattern_matches_with?(KIJI_VERSION, pattern)
+        apply_behaviour(&block)
+      else
+        false
+      end
+    else
+      # KIJI_VERSION not defined
       false
     end
   end
