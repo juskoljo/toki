@@ -168,7 +168,7 @@ module Toki
 
   def detect_os    
     case RbConfig::CONFIG['host_os']
-    when /mswin|msys|mingw|windows|win32|cygwin|bccwin|wince|emc/i
+    when /msdos|mswin|msys|djgpp|mingw|windows|win32|cygwin|bccwin|wince|emc/i
       :windows
     when /darwin|mac os/i
       :osx

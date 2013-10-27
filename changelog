@@ -1,3 +1,12 @@
+Sun Oct 27 22:29:21 +0200 2013  Jussi Koljonen  <jussi.koljonen@gmail.com>
+
+    * Toki version 0.0.3 changes:
+
+      * Toki can be included to Class/Module and called from instance methods
+      * Added support for Array and Symbol arguments; e.g. :engine => [:ruby, 'jruby']
+      * Added more platforms to host_os detection; "msdos" and "djgpp" (windows)
+      * Minor internal refactoring
+
 Sun Oct 27 12:42:47 +0200 2013  Jussi Koljonen  <jussi.koljonen@gmail.com>
 
     * Toki version 0.0.2 changes:
