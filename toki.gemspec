@@ -14,4 +14,5 @@ Gem::Specification.new do |gem|
   gem.name          = "toki"
   gem.require_paths = ["lib"]
   gem.version       = Toki::VERSION
+  gem.license       = 'MIT'
 end
