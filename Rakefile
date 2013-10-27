@@ -4,12 +4,10 @@ require "rake/testtask"
 
 task :default => :test
 
-desc "Run unit tests"
-task :test do
-  Rake::TestTask.new { | task |
-    task.pattern = 'test/test_*.rb'
-    task.verbose = true
-    task.options = '-v'
-    task.warning = false
-  }
+# :test
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.test_files = FileList['test/test_*.rb']
+  t.options = '-v'
+  t.verbose = true
 end

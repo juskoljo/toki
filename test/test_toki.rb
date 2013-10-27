@@ -28,15 +28,17 @@ class TestToki < Test::Unit::TestCase
   end
 
   def test_jruby_version
-    unless (jruby_version_defined = defined?(JRUBY_VERSION))
-      Object.const_set(:JRUBY_VERSION, '1.7.4')
+    if (jruby_version_defined = defined?(JRUBY_VERSION))
+      version = JRUBY_VERSION
+    else
+      Object.const_set(:JRUBY_VERSION, (version = 'x.x.x'))
     end
     klass = Class.new do
       extend Toki
       def hello
         nil
       end
-      when_ruby :jruby_version => '1.7.4' do
+      when_ruby :jruby_version => version do
         def hello
           "world"
         end
@@ -49,9 +51,11 @@ class TestToki < Test::Unit::TestCase
   end
 
   def test_rbx_version
-    unless (rbx_defined = defined?(Rubinius))
+    if (rbx_defined = defined?(Rubinius))
+      version = Rubinius::VERSION
+    else
       klass = Class.new
-      klass.const_set(:VERSION, '2.1.1')
+      klass.const_set(:VERSION, (version = 'x.x.x'))
       Object.const_set(:Rubinius, klass)
     end
     klass = Class.new do
@@ -59,7 +63,7 @@ class TestToki < Test::Unit::TestCase
       def hello
         nil
       end
-      when_ruby :rbx_version => '2.1.1' do
+      when_ruby :rbx_version => version do
         def hello
           "world"
         end
@@ -72,15 +76,17 @@ class TestToki < Test::Unit::TestCase
   end
 
   def test_macruby_version
-    unless (macruby_version_defined = defined?(MACRUBY_VERSION))
-      Object.const_set(:MACRUBY_VERSION, '0.12')
+    if (macruby_version_defined = defined?(MACRUBY_VERSION))
+      version = MACRUBY_VERSION
+    else
+      Object.const_set(:MACRUBY_VERSION, (version = 'x.x.x'))
     end
     klass = Class.new do
       extend Toki
       def hello
         nil
       end
-      when_ruby :macruby_version => '0.12' do
+      when_ruby :macruby_version => version do
         def hello
           "world"
         end
@@ -93,15 +99,17 @@ class TestToki < Test::Unit::TestCase
   end
 
   def test_maglev_version
-    unless (maglev_version_defined = defined?(MAGLEV_VERSION))
-      Object.const_set(:MAGLEV_VERSION, '1.1RC1')
+    if (maglev_version_defined = defined?(MAGLEV_VERSION))
+      version = MAGLEV_VERSION
+    else
+      Object.const_set(:MAGLEV_VERSION, (version = 'x.x.x'))
     end
     klass = Class.new do
       extend Toki
       def hello
         nil
       end
-      when_ruby :maglev_version => '1.1RC1' do
+      when_ruby :maglev_version => version do
         def hello
           "world"
         end
@@ -114,15 +122,17 @@ class TestToki < Test::Unit::TestCase
   end
 
   def test_ironruby_version
-    unless (ironruby_version_defined = defined?(IRONRUBY_VERSION))
-      Object.const_set(:IRONRUBY_VERSION, '1.1.3')
+    if (ironruby_version_defined = defined?(IRONRUBY_VERSION))
+      version = IRONRUBY_VERSION
+    else
+      Object.const_set(:IRONRUBY_VERSION, (version = 'x.x.x'))
     end
     klass = Class.new do
       extend Toki
       def hello
         nil
       end
-      when_ruby :ironruby_version => '1.1.3' do
+      when_ruby :ironruby_version => version do
         def hello
           "world"
         end
@@ -135,15 +145,17 @@ class TestToki < Test::Unit::TestCase
   end
 
   def test_kiji_version
-    unless (kiji_version_defined = defined?(KIJI_VERSION))
-      Object.const_set(:KIJI_VERSION, '0.11')
+    if (kiji_version_defined = defined?(KIJI_VERSION))
+      version = KIJI_VERSION
+    else
+      Object.const_set(:KIJI_VERSION, (version = 'x.x.x'))
     end
     klass = Class.new do
       extend Toki
       def hello
         nil
       end
-      when_ruby :kiji_version => '0.11' do
+      when_ruby :kiji_version => version do
         def hello
           "world"
         end

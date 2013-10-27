@@ -4,3 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'rake'
+
+if defined?(Rubinius)
+  gem 'rubysl-test-unit'
+end
