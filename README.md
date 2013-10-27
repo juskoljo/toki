@@ -93,7 +93,7 @@ class Example2
   include Toki
   def array_to_string
     when_ruby_engine :ruby do
-      when_ruby :version => /^((?!1\.[0-8]).*?)$/ do
+      when_ruby :version => /^(?!1\.[0-8]).*$/ do
         # MRI 1.9.x or later
         return [1,2,3].join
       end

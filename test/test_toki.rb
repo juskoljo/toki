@@ -277,7 +277,7 @@ class TestToki < Test::Unit::TestCase
       end
     end
     assert_raises RuntimeError do
-      p klass.new.raise_exception
+      klass.new.raise_exception
     end
   end
 
